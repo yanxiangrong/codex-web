@@ -1,1 +1,1 @@
-{"extends":"../../tsconfig.base.json","compilerOptions":{"jsx":"react-jsx","noEmit":true},"include":["src/**/*.ts","src/**/*.tsx","vite.config.ts"]}
+{"extends":"../../tsconfig.base.json","compilerOptions":{"jsx":"react-jsx","noEmit":true,"baseUrl":".","paths":{"@/*":["./src/*"]}},"include":["src/**/*.ts","src/**/*.tsx","vite.config.ts"]}
