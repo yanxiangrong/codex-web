@@ -8,13 +8,13 @@
     ".": { "types": "./src/index.ts", "import": "./dist/index.js" },
     "./server": { "types": "./src/server/index.ts", "import": "./dist/server/index.js" }
   },
-  "peerDependencies": { "@assistant-ui/react": "0.15.11", "react": ">=18" },
+  "peerDependencies": { "@assistant-ui/react": "0.15.15", "react": ">=18" },
   "dependencies": {
     "@codex-web/codex-client": "workspace:*",
     "@codex-web/protocol": "workspace:*"
   },
   "devDependencies": {
-    "@assistant-ui/react": "0.15.11",
+    "@assistant-ui/react": "0.15.15",
     "@types/react": "19.1.10",
     "react": "19.1.1"
   },

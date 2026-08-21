@@ -46,11 +46,11 @@ importers:
   apps/web:
     dependencies:
       '@assistant-ui/react':
-        specifier: 0.15.11
-        version: 0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
+        specifier: 0.15.15
+        version: 0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
       '@assistant-ui/react-markdown':
         specifier: ^0.14.11
-        version: 0.14.11(@assistant-ui/react@0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.14.11(@assistant-ui/react@0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@base-ui/react':
         specifier: ^1.7.0
         version: 1.7.0(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -126,8 +126,8 @@ importers:
         version: link:../protocol
     devDependencies:
       '@assistant-ui/react':
-        specifier: 0.15.11
-        version: 0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.2.8(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
+        specifier: 0.15.15
+        version: 0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.2.8(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
       '@types/react':
         specifier: 19.1.10
         version: 19.1.10
@@ -172,8 +172,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@assistant-ui/react@0.15.11':
-    resolution: {integrity: sha512-rVMh1xwvdi7Q7B8+LJ6asDSTmmVYSbW2SjgYtCLPhMVhPcTqYZ+UQnjTCotKfwalLIOzlY9P6Q8QmFWz2YcTXQ==}
+  '@assistant-ui/react@0.15.15':
+    resolution: {integrity: sha512-gj46xpSW3g0OBzbK6LhIFW3eUzS5IWTECppYTMt4VD2DwoGDZx1C0VFsRNvMLydVdvDzAiyTZPq6AeM+G/+Naw==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -3917,9 +3917,9 @@ snapshots:
       - ioredis
       - redis
 
-  '@assistant-ui/react-markdown@0.14.11(@assistant-ui/react@0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@assistant-ui/react-markdown@0.14.11(@assistant-ui/react@0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@assistant-ui/react': 0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
+      '@assistant-ui/react': 0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))
       '@radix-ui/react-primitive': 2.1.10(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-use-callback-ref': 1.1.4(@types/react@19.1.10)(react@19.1.1)
       classnames: 2.5.1
@@ -3932,7 +3932,7 @@ snapshots:
       - react-dom
       - supports-color
 
-  '@assistant-ui/react@0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))':
+  '@assistant-ui/react@0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))':
     dependencies:
       '@assistant-ui/core': 0.3.14(@assistant-ui/store@0.3.10(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(react@19.1.1))(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(assistant-cloud@0.1.41)(react@19.1.1)(zustand@5.0.15(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))
       '@assistant-ui/store': 0.3.10(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(react@19.1.1)
@@ -3947,7 +3947,6 @@ snapshots:
       '@radix-ui/react-use-escape-keydown': 1.1.5(@types/react@19.1.10)(react@19.1.1)
       assistant-cloud: 0.1.41
       assistant-stream: 0.3.38
-      nanoid: 6.0.1
       radix-ui: 1.6.7(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
@@ -3964,7 +3963,7 @@ snapshots:
       - redis
       - use-sync-external-store
 
-  '@assistant-ui/react@0.15.11(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.2.8(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))':
+  '@assistant-ui/react@0.15.15(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.2.8(react@19.1.1))(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1))':
     dependencies:
       '@assistant-ui/core': 0.3.14(@assistant-ui/store@0.3.10(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(react@19.1.1))(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(assistant-cloud@0.1.41)(react@19.1.1)(zustand@5.0.15(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.6.0(react@19.1.1)))
       '@assistant-ui/store': 0.3.10(@assistant-ui/tap@0.9.13(@types/react@19.1.10)(react@19.1.1))(@types/react@19.1.10)(react@19.1.1)
@@ -3979,7 +3978,6 @@ snapshots:
       '@radix-ui/react-use-escape-keydown': 1.1.5(@types/react@19.1.10)(react@19.1.1)
       assistant-cloud: 0.1.41
       assistant-stream: 0.3.38
-      nanoid: 6.0.1
       radix-ui: 1.6.7(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(react-dom@19.2.8(react@19.1.1))(react@19.1.1)
       react: 19.1.1
       react-dom: 19.2.8(react@19.1.1)
