@@ -1,7 +1,31 @@
-import { AssistantRuntimeProvider, useExternalStoreRuntime, type ThreadMessageLike } from "@assistant-ui/react";
+import { AssistantRuntimeProvider, useExternalStoreRuntime, type AppendMessage, type ThreadMessageLike } from "@assistant-ui/react";
 import type { PropsWithChildren } from "react";
 
-export function CodexRuntimeProvider({ messages, children }: PropsWithChildren<{ messages: ThreadMessageLike[] }>) {
-  const runtime = useExternalStoreRuntime<ThreadMessageLike>({ messages, convertMessage: (message) => message, isDisabled: true, onNew: async () => undefined });
+interface RuntimeProps {
+  messages: ThreadMessageLike[];
+  isRunning: boolean;
+  onSend: (text: string) => Promise<void>;
+  onCancel: () => Promise<void>;
+}
+
+function textFrom(message: AppendMessage): string {
+  return message.content
+    .filter((part): part is Extract<(typeof message.content)[number], { type: "text" }> => part.type === "text")
+    .map((part) => part.text)
+    .join("\n")
+    .trim();
+}
+
+export function CodexRuntimeProvider({ messages, isRunning, onSend, onCancel, children }: PropsWithChildren<RuntimeProps>) {
+  const runtime = useExternalStoreRuntime<ThreadMessageLike>({
+    messages,
+    convertMessage: (message) => message,
+    isRunning,
+    onNew: async (message) => {
+      const text = textFrom(message);
+      if (text) await onSend(text);
+    },
+    onCancel,
+  });
   return <AssistantRuntimeProvider runtime={runtime}>{children}</AssistantRuntimeProvider>;
 }

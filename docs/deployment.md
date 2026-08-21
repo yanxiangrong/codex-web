@@ -7,7 +7,7 @@ Environment variables:
 - `CODEX_BIN`: server-controlled absolute Codex executable path
 - `HOST`: listen address; defaults to `127.0.0.1`
 - `PORT`: HTTP port; defaults to `3001`
-- `LOG_LEVEL`: reserved structured-log level
+- `LOG_LEVEL`: structured container log level; defaults to `info`
 
 ## Docker without cloning the repository
 

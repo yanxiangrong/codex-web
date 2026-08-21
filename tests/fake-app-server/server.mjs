@@ -38,6 +38,8 @@ function send(message) {
 
 let initialized = false;
 let resumed = false;
+let newThreadStarted = false;
+let newThreadMaterialized = false;
 createInterface({ input: process.stdin }).on("line", (line) => {
   if (!line.trim()) return;
   let request;
@@ -51,21 +53,32 @@ createInterface({ input: process.stdin }).on("line", (line) => {
   } else if (!initialized) {
     send({ id: request.id, error: { code: -32002, message: "Not initialized" } });
   } else if (request.method === "thread/list") {
-    send({ id: request.id, result: { data: [{ ...thread, turns: [] }], nextCursor: null, backwardsCursor: null } });
+    const data = [{ ...thread, turns: [] }];
+    if (newThreadMaterialized) data.unshift({ ...thread, id: "019new-thread", name: null, preview: "First message", turns: [] });
+    send({ id: request.id, result: { data, nextCursor: null, backwardsCursor: null } });
   } else if (request.method === "thread/read") {
-    if (request.params?.threadId !== thread.id) send({ id: request.id, error: { code: -32602, message: "Unknown thread" } });
-    else send({ id: request.id, result: { thread: { ...thread, turns: request.params.includeTurns ? [{ id: "turn-1", items: [], itemsView: "full", status: "completed", error: null, startedAt: 1, completedAt: 2, durationMs: 1000 }] : [] } } });
+    if (request.params?.threadId === "019new-thread" && !newThreadMaterialized) send({ id: request.id, error: { code: -32602, message: "thread 019new-thread is not materialized yet; includeTurns is unavailable before first user message" } });
+    else if (request.params?.threadId !== thread.id && request.params?.threadId !== "019new-thread") send({ id: request.id, error: { code: -32602, message: "Unknown thread" } });
+    else {
+      const isNew = request.params.threadId === "019new-thread";
+      const items = isNew ? [{ type: "userMessage", id: "user-new", content: [{ type: "text", text: "First message", text_elements: [] }] }] : [];
+      send({ id: request.id, result: { thread: { ...thread, id: request.params.threadId, name: isNew ? null : thread.name, preview: isNew ? "First message" : thread.preview, turns: request.params.includeTurns ? [{ id: isNew ? "turn-new" : "turn-1", items, itemsView: "full", status: "completed", error: null, startedAt: 1, completedAt: 2, durationMs: 1000 }] : [] } } });
+    }
   } else if (request.method === "thread/start") {
+    newThreadStarted = true;
+    newThreadMaterialized = false;
     send({ id: request.id, result: { thread: { ...thread, id: "019new-thread" } } });
   } else if (request.method === "thread/resume") {
     resumed = true; send({ id: request.id, result: { thread } });
   } else if (request.method === "turn/start") {
-    if (!resumed) send({ id: request.id, error: { code: -32002, message: "Thread not resumed" } });
+    const isNew = request.params?.threadId === "019new-thread";
+    if ((!isNew && !resumed) || (isNew && !newThreadStarted)) send({ id: request.id, error: { code: -32002, message: "Thread not loaded" } });
     else {
-      const turn = { id: "turn-active", items: [], itemsView: "full", status: "inProgress", error: null, startedAt: 3, completedAt: null, durationMs: null };
+      if (isNew) newThreadMaterialized = true;
+      const turn = { id: isNew ? "turn-new" : "turn-active", items: [], itemsView: "full", status: "inProgress", error: null, startedAt: 3, completedAt: null, durationMs: null };
       send({ id: request.id, result: { turn } });
-      send({ method: "turn/started", params: { threadId: thread.id, turn } });
-      if (request.params.input?.[0]?.text !== "hold") send({ method: "turn/completed", params: { threadId: thread.id, turn: { ...turn, status: "completed" } } });
+      send({ method: "turn/started", params: { threadId: request.params.threadId, turn } });
+      if (request.params.input?.[0]?.text !== "hold") send({ method: "turn/completed", params: { threadId: request.params.threadId, turn: { ...turn, status: "completed" } } });
     }
   } else if (request.method === "turn/interrupt" || request.method === "thread/name/set" || request.method === "thread/archive" || request.method === "thread/unarchive") {
     send({ id: request.id, result: {} });

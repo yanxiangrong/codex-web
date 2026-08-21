@@ -5,6 +5,8 @@ export class SessionCoordinator {
   private readonly activeTurns = new Map<string, string>();
   constructor(private readonly client: CodexClient) {}
 
+  markLoaded(threadId: string): void { this.resumed.add(threadId); }
+
   async startTurn(threadId: string, input: string): Promise<{ id: string }> {
     if (this.activeTurns.has(threadId)) throw new ActiveTurnError();
     if (!this.resumed.has(threadId)) { await this.client.resumeThread(threadId); this.resumed.add(threadId); }

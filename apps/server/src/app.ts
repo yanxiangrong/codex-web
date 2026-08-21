@@ -6,7 +6,7 @@ import { ApprovalCoordinator } from "./approvals.js";
 import { ActiveTurnError, SessionCoordinator } from "./sessions.js";
 
 export function createApp(client: CodexClient, events = new EventBroadcaster(), codexVersion = "unknown") {
-  const app = Fastify({ logger: false });
+  const app = Fastify({ logger: { level: process.env.LOG_LEVEL ?? "info" } });
   const sessions = new SessionCoordinator(client);
   const approvals = new ApprovalCoordinator(client, events);
   client.on("notification", (method, payload) => {
@@ -41,6 +41,7 @@ export function createApp(client: CodexClient, events = new EventBroadcaster(), 
   app.post("/api/threads", async (request, reply) => {
     const body = request.body as { cwd?: string } | undefined;
     const thread = await client.startThread({ cwd: body?.cwd });
+    sessions.markLoaded(thread.id);
     return reply.code(201).send(mapThread(thread));
   });
   app.patch<{ Params: { id: string } }>("/api/threads/:id/name", async (request) => {

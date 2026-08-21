@@ -5,7 +5,7 @@ import { api } from "./api.js";
 interface Store {
   threads: ThreadSummary[]; active?: ThreadDetail; nextCursor?: string; approvals: ApprovalDto[];
   connection: "connected" | "reconnecting" | "offline"; loading: boolean; error?: string; eventSource?: EventSource;
-  loadThreads(cursor?: string): Promise<void>; selectThread(id: string): Promise<void>; refresh(): Promise<void>;
+  loadThreads(cursor?: string): Promise<void>; createThread(): Promise<void>; selectThread(id: string): Promise<void>; refresh(): Promise<void>;
   connect(): void; send(input: string): Promise<void>; interrupt(): Promise<void>; resolveApproval(approval: ApprovalDto, decision: string): Promise<void>;
 }
 let refreshTimer: ReturnType<typeof setTimeout> | undefined;
@@ -15,6 +15,13 @@ export const useCodexStore = create<Store>((set, get) => ({
   async loadThreads(cursor) {
     try { const page = await api.threads(cursor); set((state) => ({ threads: cursor ? [...state.threads, ...page.data] : page.data, nextCursor: page.nextCursor, error: undefined })); }
     catch (error) { set({ error: error instanceof Error ? error.message : "Unable to load threads" }); }
+  },
+  async createThread() {
+    set({ loading: true, error: undefined });
+    try {
+      const thread = await api.createThread();
+      set((state) => ({ active: thread, threads: [thread, ...state.threads.filter((item) => item.id !== thread.id)], loading: false }));
+    } catch (error) { set({ loading: false, error: error instanceof Error ? error.message : "Unable to create thread" }); }
   },
   async selectThread(id) {
     set({ loading: true, error: undefined });
