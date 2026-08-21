@@ -31,7 +31,7 @@ jobs:
         run: |
           docker run --detach --name codex-web-ci --publish 127.0.0.1:3199:3001 codex-web:ci
           trap 'docker rm --force codex-web-ci' EXIT
-          curl --retry 20 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:3199/api/health
+          curl --retry 20 --retry-delay 1 --retry-all-errors --fail http://127.0.0.1:3199/api/health || { docker logs codex-web-ci; exit 1; }
           curl --fail http://127.0.0.1:3199/api/codex/info
       - name: Validate Compose configuration
         run: docker compose config --quiet
