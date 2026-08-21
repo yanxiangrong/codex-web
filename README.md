@@ -44,27 +44,27 @@ pnpm start
 
 The Fastify server serves `apps/web/dist` on `127.0.0.1:3001`. Put an authenticated HTTPS reverse proxy in front before remote access. See [deployment](docs/deployment.md).
 
-## Docker Compose
+## Docker deployment (no clone required)
 
-The published image includes the tested Codex CLI and runs the service as a non-root user. Copy the example settings, then point the mounts at your existing Codex home and projects:
+The public image includes the tested Codex CLI and runs the service as a non-root user. You can start it directly without cloning this repository:
 
 ```bash
-cp .env.example .env
-# Edit CODEX_HOME, WORKSPACE_DIR, PUID, and PGID.
-docker compose up -d
-docker compose ps
+docker run -d \
+  --name codex-web \
+  --restart unless-stopped \
+  --init \
+  --security-opt no-new-privileges:true \
+  -e PUID="$(id -u)" \
+  -e PGID="$(id -g)" \
+  -p 127.0.0.1:3001:3001 \
+  -v "$HOME/.codex:/home/codex/.codex" \
+  -v "$(pwd):/workspace" \
+  ghcr.io/yanxiangrong/codex-web:latest
 ```
 
 Open `http://127.0.0.1:3001`. The default bind is loopback-only. The container uses the mounted Codex authentication and native threads directly; it does not copy them into another database.
 
-To build locally instead of pulling GHCR:
-
-```bash
-docker compose build
-docker compose up -d
-```
-
-Published images are available at `ghcr.io/yanxiangrong/codex-web` for `linux/amd64` and `linux/arm64`.
+For a standalone Compose file, upgrades, logs, and production notes, see [deployment](docs/deployment.md). Published images are available at `ghcr.io/yanxiangrong/codex-web` for `linux/amd64` and `linux/arm64`.
 
 ## License
 
