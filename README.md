@@ -1,6 +1,17 @@
-# Codex Web
+# Codex runtime adapter for assistant-ui
 
-An open-source browser client for native Codex CLI threads. Codex remains the only thread source of truth; this project talks to `codex app-server` over stdio JSONL and never parses or copies `~/.codex` sessions.
+An assistant-ui Runtime Adapter for native Codex CLI threads. The core package exposes `useCodexRuntime()` plus a Node-only Codex bridge; the included Web application is a basic integration example, not the product UI.
+
+```tsx
+import { useCodexRuntime } from "@codex-web/react-codex";
+import { AssistantRuntimeProvider } from "@assistant-ui/react";
+
+const runtime = useCodexRuntime({ baseUrl: "/api/codex" });
+
+return <AssistantRuntimeProvider runtime={runtime}><Thread /></AssistantRuntimeProvider>;
+```
+
+Codex remains the only thread source of truth. The bridge talks to `codex app-server` over stdio JSONL and never parses or copies `~/.codex` sessions.
 
 This project is an independent open-source client for OpenAI Codex.
 
@@ -13,7 +24,13 @@ It is not affiliated with or endorsed by OpenAI.
 - Codex CLI 0.147.0 or a compatible version
 - An authenticated Codex CLI installation
 
-## Development
+## Packages
+
+- `@codex-web/react-codex`: browser Runtime Adapter
+- `@codex-web/react-codex/server`: Node app-server lifecycle bridge
+- `apps/web` + `apps/server`: deployable basic example
+
+## Example development
 
 ```bash
 pnpm install

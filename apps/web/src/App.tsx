@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
-import { CodexRuntimeProvider, toAssistantMessages } from "@codex-web/assistant-runtime";
-import { useAuiState } from "@assistant-ui/react";
+import { useState } from "react";
+import { useCodexRuntime } from "@codex-web/react-codex";
+import { AssistantRuntimeProvider, useAuiState } from "@assistant-ui/react";
 import { MenuIcon, PanelLeftIcon, SparklesIcon } from "lucide-react";
 import { Thread } from "@/components/assistant-ui/thread";
 import { ThreadListItems, ThreadListNew, ThreadListRoot } from "@/components/assistant-ui/thread-list";
 import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { api } from "./api.js";
-import { useCodexStore } from "./store.js";
 
 function Logo({ collapsed = false }: { collapsed?: boolean }) {
   return <div className={cn("flex items-center text-sm font-medium", collapsed ? "size-8 shrink-0 justify-center" : "min-w-0 gap-2 px-2")}>
@@ -53,13 +51,6 @@ function BaseInterface() {
 }
 
 export default function App() {
-  const store = useCodexStore();
-  useEffect(() => { void store.loadThreads(); store.connect(); return () => useCodexStore.getState().eventSource?.close(); }, []);
-  const activeRunning = store.active?.turns.some((turn) => turn.status === "inProgress") ?? false;
-  const threadData = store.threads.map((thread) => ({ status: "regular" as const, id: thread.id, title: thread.name ?? (thread.preview || "New Thread"), custom: { cwd: thread.cwd, updatedAt: thread.updatedAt } }));
-  async function renameThread(id: string, title: string) { await api.rename(id, title); await store.loadThreads(); if (store.active?.id === id) await store.refresh(); }
-  async function archiveThread(id: string) { await api.archive(id); if (useCodexStore.getState().active?.id === id) useCodexStore.setState({ active: undefined }); await store.loadThreads(); }
-  return <CodexRuntimeProvider messages={toAssistantMessages(store.active?.turns ?? [])} isRunning={activeRunning} onSend={store.send} onCancel={store.interrupt} threadId={store.active?.id} threads={threadData} isThreadsLoading={store.loading} onNewThread={store.createThread} onSwitchThread={store.selectThread} onRenameThread={renameThread} onArchiveThread={archiveThread}>
-    <BaseInterface />
-  </CodexRuntimeProvider>;
+  const runtime = useCodexRuntime({ baseUrl: "/api" });
+  return <AssistantRuntimeProvider runtime={runtime}><BaseInterface /></AssistantRuntimeProvider>;
 }

@@ -1,7 +1,39 @@
 # Architecture
 
-The browser sends commands by REST and receives runtime events by SSE. Fastify owns no transcript database. `packages/codex-client` starts `codex app-server --stdio`, performs the stable initialize handshake, and routes JSON-RPC. `packages/protocol` contains browser-facing projections, while `packages/assistant-runtime` is the only adapter coupled to assistant-ui.
+The repository's core product is a Codex runtime adapter for assistant-ui, not a fixed chat application.
 
-SSE is not authoritative. On connection or event gaps, the browser reads the thread again. Opening a thread calls `thread/read`; sending the first prompt lazily calls `thread/resume` before `turn/start`.
+```text
+User assistant-ui application
+  -> useCodexRuntime()
+  -> HTTP + SSE bridge
+  -> codex app-server --stdio
+  -> native ~/.codex threads
+```
 
-Approvals are held only in memory and fail closed on timeout, missing browser connection, malformed input, unknown request type, or shutdown.
+## Core packages
+
+- `packages/assistant-runtime` publishes `@codex-web/react-codex`. Its browser entry owns thread/message conversion and the `ExternalStoreRuntime`; its `/server` entry owns Node-only Codex lifecycle primitives.
+- `packages/codex-client` is independent of React and assistant-ui. It implements stdio JSONL, JSON-RPC, generated Codex types, and the initialize handshake.
+- `packages/protocol` contains the thin HTTP/SSE projection and is never persisted.
+
+## Reference application
+
+`apps/web` and `apps/server` are the deployable basic example. Registry UI under `apps/web/src/components` proves that the adapter works with assistant-ui Base components; it is not part of the adapter package API.
+
+The example server is also the current reference HTTP/SSE handler. It owns no transcript database. Opening a thread calls `thread/read`; sending calls `thread/resume` before `turn/start`.
+
+## Public API
+
+```tsx
+const runtime = useCodexRuntime({ baseUrl: "/api" });
+
+<AssistantRuntimeProvider runtime={runtime}>
+  <Thread />
+</AssistantRuntimeProvider>
+```
+
+```ts
+import { createCodexBridge } from "@codex-web/react-codex/server";
+```
+
+SSE is a transport, not authoritative state. Codex remains the only thread source of truth. Approvals remain in memory and fail closed on timeout, missing browser connection, unknown request type, or shutdown.

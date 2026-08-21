@@ -5,8 +5,8 @@
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "build": "pnpm -r build",
-    "dev": "pnpm --parallel --filter @codex-web/server --filter @codex-web/web dev",
-    "start": "pnpm --filter @codex-web/server start",
+    "dev": "pnpm --parallel --filter @codex-web/example-server --filter @codex-web/example-basic dev",
+    "start": "pnpm --filter @codex-web/example-server start",
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run",
     "test:integration": "vitest run tests/client.integration.test.ts tests/server.integration.test.ts",
