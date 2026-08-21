@@ -1,0 +1,26 @@
+services:
+  codex-web:
+    image: ${CODEX_WEB_IMAGE:-ghcr.io/yanxiangrong/codex-web:latest}
+    build:
+      context: .
+      args:
+        CODEX_VERSION: ${CODEX_VERSION:-0.147.0}
+    restart: unless-stopped
+    init: true
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - "127.0.0.1:${CODEX_WEB_PORT:-3001}:3001"
+    volumes:
+      - ${CODEX_HOME:-${HOME}/.codex}:/home/codex/.codex
+      - ${WORKSPACE_DIR:-.}:/workspace
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:3001/api/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 4
+      start_period: 10s

@@ -44,6 +44,28 @@ pnpm start
 
 The Fastify server serves `apps/web/dist` on `127.0.0.1:3001`. Put an authenticated HTTPS reverse proxy in front before remote access. See [deployment](docs/deployment.md).
 
+## Docker Compose
+
+The published image includes the tested Codex CLI and runs the service as a non-root user. Copy the example settings, then point the mounts at your existing Codex home and projects:
+
+```bash
+cp .env.example .env
+# Edit CODEX_HOME, WORKSPACE_DIR, PUID, and PGID.
+docker compose up -d
+docker compose ps
+```
+
+Open `http://127.0.0.1:3001`. The default bind is loopback-only. The container uses the mounted Codex authentication and native threads directly; it does not copy them into another database.
+
+To build locally instead of pulling GHCR:
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Published images are available at `ghcr.io/yanxiangrong/codex-web` for `linux/amd64` and `linux/arm64`.
+
 ## License
 
 Apache-2.0. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

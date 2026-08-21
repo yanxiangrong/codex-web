@@ -23,3 +23,15 @@ jobs:
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+      - name: Build Docker image
+        run: docker build --tag codex-web:ci .
+      - name: Smoke-test bundled Codex CLI
+        run: docker run --rm codex-web:ci codex --version
+      - name: Smoke-test Docker HTTP service
+        run: |
+          docker run --detach --name codex-web-ci --publish 127.0.0.1:3199:3001 codex-web:ci
+          trap 'docker rm --force codex-web-ci' EXIT
+          curl --retry 20 --retry-delay 1 --retry-connrefused --fail http://127.0.0.1:3199/api/health
+          curl --fail http://127.0.0.1:3199/api/codex/info
+      - name: Validate Compose configuration
+        run: docker compose config --quiet
