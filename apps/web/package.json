@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@assistant-ui/react": "0.15.11",
+    "@assistant-ui/react": "0.15.15",
     "@assistant-ui/react-markdown": "^0.14.11",
     "@base-ui/react": "^1.7.0",
     "@codex-web/react-codex": "workspace:*",
