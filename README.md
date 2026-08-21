@@ -6,7 +6,7 @@ An assistant-ui Runtime Adapter for native Codex CLI threads. The core package e
 import { useCodexRuntime } from "@codex-web/react-codex";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 
-const runtime = useCodexRuntime({ baseUrl: "/api/codex" });
+const runtime = useCodexRuntime({ baseUrl: "/api" });
 
 return <AssistantRuntimeProvider runtime={runtime}><Thread /></AssistantRuntimeProvider>;
 ```
